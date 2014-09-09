@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.nineoldandroids.view.animation.AnimatorProxy;
+import com.sothree.slidinguppanel.LockableScrollView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
 
@@ -29,11 +30,19 @@ public class DemoActivity extends Activity {
 
     private SlidingUpPanelLayout mLayout;
 
+    private View panelSpaceView;
+    private View panelTransparentView;
+    private LockableScrollView mScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_demo);
+
+        mScrollView = (LockableScrollView) findViewById(R.id.panelScrollView);
+        panelTransparentView = findViewById(R.id.transparentView);
+        panelSpaceView = findViewById(R.id.space);
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.setPanelSlideListener(new PanelSlideListener() {
@@ -47,12 +56,18 @@ public class DemoActivity extends Activity {
             public void onPanelExpanded(View panel) {
                 Log.i(TAG, "onPanelExpanded");
 
+                panelSpaceView.setVisibility(View.VISIBLE);
+                panelTransparentView.setVisibility(View.GONE);
+                mScrollView.setScrollingEnabled(true);
             }
 
             @Override
             public void onPanelCollapsed(View panel) {
                 Log.i(TAG, "onPanelCollapsed");
 
+                panelSpaceView.setVisibility(View.GONE);
+                panelTransparentView.setVisibility(View.INVISIBLE);
+                mScrollView.setScrollingEnabled(false);
             }
 
             @Override
@@ -66,8 +81,17 @@ public class DemoActivity extends Activity {
             }
         });
 
-        TextView t = (TextView) findViewById(R.id.main);
-        t = (TextView) findViewById(R.id.name);
+        mLayout.setScrollableView(
+                mScrollView,
+                getResources().getDimensionPixelSize(R.dimen.sliding_panel_padding)
+        );
+        mLayout.setPanelHeight(
+                getResources().getDimensionPixelSize(R.dimen.sliding_panel_height) +
+                        getResources().getDimensionPixelSize(R.dimen.sliding_panel_padding)
+        );
+        mLayout.setEnableDragViewTouchEvents(true);
+
+        TextView t = (TextView) findViewById(R.id.name);
         t.setText(Html.fromHtml(getString(R.string.hello)));
         Button f = (Button) findViewById(R.id.follow);
         f.setText(Html.fromHtml(getString(R.string.follow)));
@@ -118,7 +142,7 @@ public class DemoActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_toggle: {
                 if (mLayout != null) {
                     if (!mLayout.isPanelHidden()) {
@@ -149,11 +173,11 @@ public class DemoActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private int getActionBarHeight(){
+    private int getActionBarHeight() {
         int actionBarHeight = 0;
         TypedValue tv = new TypedValue();
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
         return actionBarHeight;
     }
