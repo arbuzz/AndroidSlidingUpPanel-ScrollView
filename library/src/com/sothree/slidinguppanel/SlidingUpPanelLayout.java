@@ -803,7 +803,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
                 }
 
-                // check if scroll down or scroll up and ListView is in top position
+                // check if scroll down or scroll up and ListView or ScrollView is in top position
                 boolean scrollableViewNotInTopPosition;
 
                 if (mScrollableView instanceof LockableScrollView) {

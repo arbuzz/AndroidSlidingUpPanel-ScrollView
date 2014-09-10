@@ -56,8 +56,11 @@ public class DemoActivity extends Activity {
             public void onPanelExpanded(View panel) {
                 Log.i(TAG, "onPanelExpanded");
 
+                //make visible space view inside scrollView
                 panelSpaceView.setVisibility(View.VISIBLE);
+                //make gone space view outside scrollView
                 panelTransparentView.setVisibility(View.GONE);
+                //enable scrolling in scrollView
                 mScrollView.setScrollingEnabled(true);
             }
 
@@ -65,8 +68,11 @@ public class DemoActivity extends Activity {
             public void onPanelCollapsed(View panel) {
                 Log.i(TAG, "onPanelCollapsed");
 
+                //make gone space view inside scrollView
                 panelSpaceView.setVisibility(View.GONE);
+                //make invisible space view outside scrollView
                 panelTransparentView.setVisibility(View.INVISIBLE);
+                //disable scrolling in scrollView (so it can't intercept our gestures, that is opening panel)
                 mScrollView.setScrollingEnabled(false);
             }
 
@@ -81,14 +87,17 @@ public class DemoActivity extends Activity {
             }
         });
 
+        //tell our SlidingPanel, that there is ScrollView
         mLayout.setScrollableView(
                 mScrollView,
                 getResources().getDimensionPixelSize(R.dimen.sliding_panel_padding)
         );
+        //tell our SlidingPanel the height + the offset height we want after expanding
         mLayout.setPanelHeight(
                 getResources().getDimensionPixelSize(R.dimen.sliding_panel_height) +
                         getResources().getDimensionPixelSize(R.dimen.sliding_panel_padding)
         );
+        //don't forget to enable dragViewTouchEvents
         mLayout.setEnableDragViewTouchEvents(true);
 
         TextView t = (TextView) findViewById(R.id.name);

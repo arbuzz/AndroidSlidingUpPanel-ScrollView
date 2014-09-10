@@ -1,3 +1,12 @@
+
+
+Android Sliding Up Panel with ScrollView support
+=========================
+
+This is a fork of [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel), also inpired by this [fork](https://github.com/dlukashev/AndroidSlidingUpPanel) by [dlukashev](https://github.com/dlukashev). This is some kind of merge dlukashev's idea into AndroidSlidingUpPanel v.2 with some improvements. For total understanding of how it's done with ScrollView - see [this](http://android.amberfog.com/?p=915) dlukashev's blog post.
+
+You need to understand, that this is a little hacky way, but it's "good enough", as I think.
+
 Android Sliding Up Panel
 =========================
 
@@ -9,31 +18,19 @@ As seen in [Umano](http://umanoapp.com) [Android app](https://play.google.com/st
 
 ### Importing the library
 
-#### Eclipse 
-
-Download the [latest release](https://github.com/umano/AndroidSlidingUpPanel/releases) and include the `library` project as a dependency in Eclipse.
-
-#### Android Studio 
-
-Simply add the following dependency to your `build.gradle` file to use the latest version:
-
-```groovy
-dependencies {
-    repositories {
-        mavenCentral()
-    }
-    compile 'com.sothree.slidinguppanel:library:+'
-}
-```
+You can import it as a Library Project
 
 ### Usage 
 
 * Include `com.sothree.slidinguppanel.SlidingUpPanelLayout` as the root element in your activity layout.
-* The layout must have `gravity` set to either `top` or `bottom`.
+* The layout must have `gravity` set to `bottom`.
 * Make sure that it has two children. The first child is your main layout. The second child is your layout for the sliding up panel.
 * The main layout should have the width and the height set to `match_parent`.
 * The sliding layout should have the width set to `match_parent` and the height set to either `match_parent` or the max desireable height.
 * By default, the whole panel will act as a drag region and will intercept clicks and drag events. You can restrict the drag area to a specific view by using the `setDragView` method or `dragView` attribute. 
+* If you use LockableScrollView inside this Panel, you need to invoke setScrollableView(), setPanelHeight() with right attributes, and setEnableDragViewTouchEvents(true) (see example).
+* Also you need to add some transparent views into your layout and change their visibility in PanelSlideListener methods, as it shown in the example.
+
 
 For more information, please refer to the sample code.
 
